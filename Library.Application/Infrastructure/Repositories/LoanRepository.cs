@@ -33,11 +33,11 @@ public class LoanRepository : Repository<Loan, Guid>
         }
         return base.Create(new Loan
         (
-            loanDate: loanDate,
-            returnDate: returnDate,
-            book: book,
             library: library,
-            user: user
+            book: book,
+            user: user,
+            loanDate: loanDate,
+            returnDate: returnDate
         ));
     }
 }

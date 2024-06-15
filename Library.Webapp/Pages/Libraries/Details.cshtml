@@ -3,25 +3,61 @@
 
 <h3>@Model.Library?.Name</h3>
 
+<h4>Loan a Book</h4>
+<form method="post" asp-page-handler="NewLoan">
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="NewLoan.BookId">Book</label>
+            <select class="form-select" asp-items="@Model.BookSelectList" asp-for="NewLoan.BookId"></select>
+        </div>
+        <div class="col-6">
+            <label asp-for="NewLoan.LoanDate">Loan-Date</label>
+            <input class="form-control" asp-for="NewLoan.LoanDate"/>
+            <small>
+                <span class="text-danger" asp-validation-for="NewLoan.LoanDate"></span>
+            </small>
+        </div>
+    </div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <button class="mt-2 btn btn-primary">Save</button>
+</form>
+
 <h4>Loans List</h4>
-<table class="table table-sm">
-    <thead>
-    <tr>
-        <th>Book</th>
-        <th>User</th>
-        <th>LoanDate</th>
-        <th>ReturnDate</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var l in Model.Library.Loans.OrderBy(l => l.LoanDate))
-    {
+<form method="post" asp-page-handler="Delete">
+    <table class="table table-sm">
+        <thead>
         <tr>
-            <td>@l.Book.Title</td>
-            <td>@l.Borrower.Username</td>
-            <td>@l.LoanDate</td>
-            <td>@l.ReturnDate</td>
+            <th>Book</th>
+            <th>User</th>
+            <th>LoanDate</th>
+            <th>ReturnDate</th>
+            <th>Action</th>
+            <th>Delete?</th>
         </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach (var l in Model.Loans.OrderBy(l => l.Book.Title))
+        {
+            <tr>
+                <td>@l.Book.Title</td>
+                <td>@l.Borrower.Username</td>
+                <td>@l.LoanDate</td>
+                <td>
+                    <input type="hidden" asp-for="EditLoans[l.Id].Id"/>
+                    <input class="form-control" asp-for="EditLoans[l.Id].ReturnDate"/>
+                    <small>
+                        <span class="text-danger" asp-validation-for="EditLoans[l.Id].ReturnDate"></span>
+                    </small>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit" asp-page-handler="EditLoan" asp-route-loanGuid="@l.Id">Save</button>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="LoansToDelete[l.Id]" />
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-danger">Delete selected</button>
+</form>

@@ -20,13 +20,13 @@ public class Loan : IEntity<Guid>
     public DateTime LoanDate { get; set; }
     public DateTime ReturnDate { get; set; }
 
-    public Loan(Book book, Library library, User user, DateTime loanDate, DateTime returnDate)
+    public Loan(Library library, Book book, User user, DateTime loanDate, DateTime returnDate)
     {
         Id = Guid.NewGuid();
-        BookId = book.Id;
-        Book = book;
         LibraryId = library.Id;
         Library = library;
+        BookId = book.Id;
+        Book = book;
         UserId = user.Id;
         Borrower = user;
         LoanDate = loanDate;

@@ -72,7 +72,7 @@ public class LibraryContext : DbContext
         var i = 0;
         var libraries = new Faker<Model.Library>("en").CustomInstantiator(f =>
             {
-                var name = f.Address.City() + "City Library";
+                var name = f.Address.City() + " City Library";
                 var openTime = TimeSpan.FromHours(f.Random.Number(7, 10));
                 var closeTime = TimeSpan.FromHours(f.Random.Number(17, 20));
                 var salt = cryptService.GenerateSecret(256);
@@ -126,8 +126,8 @@ public class LibraryContext : DbContext
 
                 return new Loan
                 (
-                    book: book,
                     library: library,
+                    book: book,
                     user: f.Random.ListItem(Users.ToList()),
                     loanDate: f.Date.Past(),
                     returnDate: f.Date.Future()

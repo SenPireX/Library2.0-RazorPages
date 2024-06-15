@@ -41,8 +41,9 @@ public class AuthService
         var role = dbUser.UserType.ToString();
         var claims = new List<Claim>()
         {
+            new Claim(ClaimTypes.NameIdentifier, dbUser.Id.ToString()),
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, role)
+            new Claim(ClaimTypes.Role, role),
         };
         var claimsIdentity = new ClaimsIdentity
         (

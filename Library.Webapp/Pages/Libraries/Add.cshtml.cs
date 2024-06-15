@@ -35,7 +35,7 @@ public class AddModel : PageModel
     }
 
     [FromRoute] public Guid Guid { get; private set; }
-    [BindProperty] public Loan NewLoan { get; set; } = default!;
+    [BindProperty] public LoanDto NewLoan { get; set; } = default!;
     public Application.Model.Library Library { get; private set; } = default!;
     public Dictionary<Guid, LoanDto> EditLoans { get; set; } = new();
     public Dictionary<Guid, bool> LoansToDelete { get; set; } = new();
@@ -67,37 +67,13 @@ public class AddModel : PageModel
 
     public IActionResult OnGet(Guid guid)
     {
+        Guid = guid;
         return Page();
     }
 
     public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
     {
-        var library = _library.Set
-            .Include(l => l.Loans)
-            .ThenInclude(l => l.Book)
-            .Include(l => l.Loans)
-            .ThenInclude(l => l.Borrower)
-            .FirstOrDefault(l => l.Id == Guid);
-
-        if (library is null)
-        {
-            context.Result = RedirectToPage("/Libraries/Index");
-            return;
-        }
-
-        Library = library;
-        LoansToDelete = library.Loans.ToDictionary(l => l.Id, l => false);
-        var loans = _loan.Set
-            .Where(l => l.Library.Id == Guid)
-            .Select(l => new LoanDto(
-                l.Id,
-                l.LoanDate,
-                l.ReturnDate,
-                l.BookId,
-                l.LibraryId,
-                l.UserId
-            ))
-            .ToList();
-        EditLoans = loans.ToDictionary(l => l.Id, l => l);
+       
     }
+
 }

@@ -3,7 +3,7 @@
 
 <h3>Library @Model.Library.Name</h3>
 
-<h4>Loan a Book</h4>
+<h4>Add a new Library</h4>
 <form method="post" asp-page-handler="NewLoan">
     <div class="row">
         <div class="col-6">
@@ -18,11 +18,11 @@
             </small>
         </div>
     </div>
-    <div class="text-danger" asp-validation-summary=ModelOnly></div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
     <button class="mt-2 btn btn-primary">Save</button>
 </form>
 
-<h4>Loans</h4>
+<h4>Libraries</h4>
 <table class="table table-sm">
     <thead>
     <tr>

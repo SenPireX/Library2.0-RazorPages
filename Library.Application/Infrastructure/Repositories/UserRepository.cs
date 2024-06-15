@@ -11,7 +11,7 @@ public class UserRepository : Repository<User, Guid>
         _cryptService = cryptService;
     }
 
-    public async Task AddUserAsync(User user)
+    public async Task CreateUser(User user)
     {
         _db.Users.Add(user);
         await _db.SaveChangesAsync();

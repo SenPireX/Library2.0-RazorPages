@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
+using Library.Application.Dto;
 using Library.Application.Infrastructure;
 using Library.Application.Infrastructure.Repositories;
 using Library.Application.Model;
@@ -13,27 +15,21 @@ public class RegisterModel : PageModel
 {
     private readonly AuthService _authService;
     private readonly UserRepository _userRepository;
+    private readonly IMapper _mapper;
     private readonly ICryptService _cryptService;
 
-    public RegisterModel(AuthService authService, UserRepository userRepository, ICryptService cryptService)
+    public RegisterModel(AuthService authService, UserRepository userRepository, IMapper mapper, ICryptService cryptService)
     {
         _authService = authService;
         _userRepository = userRepository;
+        _mapper = mapper;
         _cryptService = cryptService;
     }
 
-    [BindProperty]
-    [Required, StringLength(16, MinimumLength = 3)]
-    public string Username { get; set; }
+    [BindProperty] public UserDto Input { get; set; } = default!;
 
-    [BindProperty]
-    [Required, StringLength(255, MinimumLength = 6)]
-    public string Password { get; set; }
-
-    [BindProperty]
-    [Required, Compare("Password")]
-    public string ConfirmPassword { get; set; }
-
+    public void OnGet() {}
+    
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
@@ -41,22 +37,19 @@ public class RegisterModel : PageModel
             return Page();
         }
 
-        var salt = _cryptService.GenerateSecret();
-        var passwordHash = _cryptService.GenerateHash(salt, Password);
+        var user = _mapper.Map<Application.Model.User>(Input);
+        user.Salt = _cryptService.GenerateSecret(256);
+        user.PasswordHash = _cryptService.GenerateHash(user.Salt, Input.Password);
 
-        var user = new Library.Application.Model.User(Username, salt, passwordHash, UserType.User);
+        await _userRepository.CreateUser(user);
 
-        await _userRepository.AddUserAsync(user);
-        
-        var (success, message) = await _authService.TryLoginAsync(Username, Password);
+        var (success, message)= await _authService.TryLoginAsync(user.Username, Input.Password);
         if (!success)
         {
             ModelState.AddModelError(string.Empty, message);
             return Page();
         }
-
-        await _authService.TryLoginAsync(Username, Password);
-
+        
         return RedirectToPage("/Index");
     }
 }
