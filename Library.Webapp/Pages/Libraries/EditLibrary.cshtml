@@ -1,0 +1,17 @@
+﻿@page "{guid}"
+@model Library.Webapp.Pages.Libraries.EditModel
+@{
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Library.Id" />
+    <div class="row">
+        <div class="col-12 col-sm-6">
+            <label asp-for="Library.Name">Name</label>
+            <input class="form-control" asp-for="Library.Name" />
+            <span class="text-danger" asp-validation-for="Library.Name"></span>
+        </div>
+    </div>
+    <div class="mt-3 text-danger" asp-validation-summary=All></div>
+    <button class="btn-primary btn" type="submit">Save</button>
+</form>

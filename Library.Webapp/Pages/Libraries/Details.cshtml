@@ -1,0 +1,27 @@
+﻿@page "{guid}"
+@model Library.Webapp.Pages.Libraries.DetailsModel
+
+<h3>@Model.Library?.Name</h3>
+
+<h4>Loans List</h4>
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Book</th>
+        <th>User</th>
+        <th>LoanDate</th>
+        <th>ReturnDate</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var l in Model.Library.Loans.OrderBy(l => l.LoanDate))
+    {
+        <tr>
+            <td>@l.Book.Title</td>
+            <td>@l.Borrower.Username</td>
+            <td>@l.LoanDate</td>
+            <td>@l.ReturnDate</td>
+        </tr>
+    }
+    </tbody>
+</table>

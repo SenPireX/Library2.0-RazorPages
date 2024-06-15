@@ -1,0 +1,28 @@
+﻿@page
+@model Library.Webapp.Pages.User.IndexModel
+<h3>User table</h3>
+
+<p>This table shows all created Users (Admin Only).</p>
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Type</th>
+        <th>Salt</th>
+        <th>Password Hash</th>
+        <th>Libraries</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var u in Model.Users)
+    {
+        <tr>
+            <td>@u.Username</td>
+            <td>@u.UserType</td>
+            <td><pre>@u.Salt</pre></td>
+            <td><pre>@u.PasswordHash</pre></td>
+            <td>@string.Join(",", u.Libraries.Select(l => l.Name).OrderBy(l => l))</td>
+        </tr>
+    }
+    </tbody>
+</table>

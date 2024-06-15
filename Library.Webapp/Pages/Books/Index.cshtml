@@ -1,0 +1,25 @@
+﻿@page
+@model Library.Webapp.Pages.Books.IndexModel
+
+
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Published</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var b in Model.Books)
+    {
+        <tr>
+            <td>@b.Title</td>
+            <td>@b.Author</td>
+            <td>@b.Genre</td>
+            <td>@b.PublishDate.ToShortDateString()</td>
+        </tr>
+    }
+    </tbody>
+</table>

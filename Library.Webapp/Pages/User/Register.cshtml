@@ -1,0 +1,30 @@
+﻿@page
+@model Library.Webapp.Pages.User.RegisterModel
+@{
+ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Username" class="control-label"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword" class="control-label"></label>
+        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

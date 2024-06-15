@@ -1,0 +1,43 @@
+﻿@page
+@model Library.Webapp.Pages.Libraries.IndexModel
+
+<h3>Libraries in Database</h3>
+<p>@Model.Libraries.Count Libraries found. Created at @DateTime.Now.ToString("HH:mm").</p>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="border border-danger p-3 border-3">
+        <p class="mb-0">@Model.Message</p>
+    </div>
+}
+
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>OpenTime</th>
+        <th>Books available</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var l in Model.Libraries)
+    {
+        <tr>
+            <td>@l.Name</td>
+            <td>@l.OpenTime.ToString(@"hh\:mm") - @l.CloseTime.ToString(@"hh\:mm")</td>
+            <td>@l.BookCount</td>
+            <td>
+                @if (Model.CanEditLibrary(l.Guid))
+                {
+                <a asp-page="/Libraries/Details" asp-route-guid="@l.Guid"><i class="fas fa-info-circle"></i></a>
+                <a class="ms-2" asp-page="/Libraries/EditLibrary" asp-route-guid="@l.Guid"><i class="fas fa-edit"></i></a>
+                <a class="ms-2" asp-page="/Libraries/Add" asp-route-guid="@l.Guid"><i class="fa-solid fa-plus"></i></a>
+                <a class="ms-2" asp-page="/Libraries/DeleteLoan" asp-route-guid="@l.Guid"><i class="fa-solid fa-minus"></i></a>
+                <a class="ms-2" asp-page="/Libraries/Delete" asp-route-guid="@l.Guid"><i class="fas fa-trash-alt"></i></a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

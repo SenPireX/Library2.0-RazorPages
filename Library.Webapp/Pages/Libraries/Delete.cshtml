@@ -1,0 +1,11 @@
+﻿@page "{guid}"
+@model Library.Webapp.Pages.Libraries.DeleteModel
+<h3>Delete Library </h3>
+
+<div class="border border-danger p-3">
+    <p>Are you sure, that you want to delete Library @Model.Library.Name?</p>
+    <form method="post">
+        <button asp-page-handler="Delete" type="submit" class="btn btn-danger">Yes</button>
+        <button asp-page-handler="Cancel" type="submit" class="btn btn-secondary">No</button>
+    </form>
+</div>

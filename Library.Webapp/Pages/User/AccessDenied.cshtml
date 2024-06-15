@@ -1,0 +1,8 @@
+﻿@page
+@model Library.Webapp.Pages.User.AccessDeniedModel
+@inject Library.Webapp.Services.AuthService AuthService
+
+<h3>No permission</h3>
+
+<p>User @AuthService.Username has no permission to open this site.</p>
+<p><a href="/">Back to Index</a></p>
