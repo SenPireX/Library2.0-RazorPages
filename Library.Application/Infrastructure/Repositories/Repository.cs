@@ -69,7 +69,6 @@ public abstract class Repository<TEntity, TKey> where TEntity : class, IEntity<T
                 }
             }
         }
-
         try
         {
             _db.SaveChanges();

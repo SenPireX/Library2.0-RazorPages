@@ -45,18 +45,20 @@ public class DetailsModel : PageModel
     public IActionResult OnPostEditLoan(Guid guid, Guid loanId, Dictionary<Guid, LoanDto> editLoans)
     {
         if (!ModelState.IsValid) { return Page(); }
-        
+
         var loan = _loan.FindById(loanId);
-        if (loan is null) { return RedirectToPage(); }
+        if (loan is null) { return RedirectToPage("/Libraries/Index"); }
+
+        var updatedLoanDto = editLoans[loanId];
+        loan.ReturnDate = updatedLoanDto.ReturnDate;
         
-        _mapper.Map(editLoans[loanId], loan);
         var (success, message) = _loan.Update(loan);
-        if (!success)
+        if (!success) 
         {
             ModelState.AddModelError("", message!);
             return Page();
         }
-        return RedirectToPage();
+        return RedirectToPage("/Libraries/Details");
     }
     
     public IActionResult OnPostNewLoan(Guid guid, LoanDto newLoan)
@@ -172,13 +174,6 @@ public class DetailsModel : PageModel
             context.Result = RedirectToPage("/Libraries/Index");
             return;
         }
-        
-        /*var username = _authService.Username;
-        if (!_authService.HasRole("Admin") && username != library.User?.Username) 
-        {
-            context.Result = new ForbidResult();
-            return;
-        }*/
         
         Library = library;
         Loans = library.Loans.ToList();
